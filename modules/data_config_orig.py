@@ -19,5 +19,5 @@ LDAP_CONFIG = {
 }
 
 # Configuracao do PostgreSQL
-PG_CONFIG = 'postgres://<dbname>:<dbpass>@<hostname>/web2canvas_prod'
-PG_CONFIG_DEV = 'postgres://<dbname>:<dbpass>@<hostname>/web2canvas_dev'
+PG_CONFIG = 'postgres://<dbuser>:<dbpass>@<hostname>/web2canvas_prod'
+PG_CONFIG_DEV = 'postgres://<dbuser>:<dbpass>@<hostname>/web2canvas_dev'
