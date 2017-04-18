@@ -9,9 +9,12 @@
 ## be redirected to HTTPS, uncomment the line below:
 # request.requires_https()
 
+## Variaveis importadas
+from data_config import EMAIL_SERVER, CLIENT_EMAIL, CLIENT_LOGIN, LDAP_CONFIG, PG_CONFIG
+
 if not request.env.web2py_runtime_gae:
-    ## if NOT running on Google App Engine use SQLite or other DB
-    db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
+    ## Conecta ao PostgreSQL
+    db = DAL(PG_CONFIG, check_reserved=['all'])
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
     db = DAL('google:datastore')
@@ -89,10 +92,6 @@ db.auth_user.full_name = Field.Virtual(
     'full_name',
     lambda row: "%s %s" % (row.auth_user.first_name, row.auth_user.last_name)
 )
-
-
-## Variaveis importadas
-from data_config import EMAIL_SERVER, CLIENT_EMAIL, CLIENT_LOGIN, LDAP_CONFIG
 
 ## configure email
 mail = Mail()
