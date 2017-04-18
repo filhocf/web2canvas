@@ -7,7 +7,7 @@
                 <div>
                     <div class="head">
                         {{if request.args(0)=='login':}}
-                        <h4>{{=T('Faça login na sua conta')}}</h4>
+                        <h4>{{=T('Faça login na sua conta (ldap)')}}</h4>
                         {{elif request.args(0)=='register':}}
                         <h4>{{=T('Crie sua conta')}}</h4>
                         {{elif request.args(0)=='profile':}}
@@ -22,86 +22,16 @@
                     </div>
                     {{if request.args(0)=='login':}}
                     <div class="form">
-                        <div class="social">
-                            <a href="{{=URL(port=porta, r=request, f='login', vars={'rede':'facebook'})}}" class="face_login">
-                            <!-- <a href="{{=URL(f='login', vars={'rede':'facebook'})}}" class="face_login"> -->
-                                <span class="face_icon">
-                                    <img src="{{=URL('static','img/i_face.png')}}" alt="fb" alt=""/>
-                                </span>
-                                <span class="text">{{=T('Entrar com Facebook')}}</span>
-                            </a>
-                            <div class="division">
-                                <hr class="left">
-                                <span>ou</span>
-                                <hr class="right">
-                            </div>
-                        </div>                    
                         {{=form.custom.begin}}
                             <!-- email -->
-                            {{ form.elements('#auth_user_email')[0] ['_placeholder'] = "Email" }}
-                            {{ form.elements('#auth_user_email')[0] ['_type'] = "email" }}
-                            {{=form.custom.widget.email}}
-                            
-                            <!-- senha -->
-                            {{ form.elements('#auth_user_password')[0] ['_placeholder'] = "Senha" }}
-                            {{=form.custom.widget.password}}
-                            <div class="remember">
-                                <div class="left">
-                                    <input class="checkbox" id="auth_user_remember" name="remember" type="checkbox" value="on" checked /><label for="auth_user_remember">{{=T('Lembrar-me (por 30 dias)')}}</label>
-                                    <!-- <label for="remember_me">Remember me</label> -->
-                                </div>
-                                <div class="right">
-                                    <a id="reset_password" href="{{=URL(f='user',args='request_reset_password')}}">{{=T('Esqueceu a senha?')}}</a>
-                                </div>
-                            </div>                             
-                            <input type="submit" class="btn" value="Entrar"/>
-                        {{=form.custom.end}}
-                    </div> <!-- form -->
-                    {{elif request.args(0)=='register':}}
-                    <div class="form">
-                        <div class="social">
-                            <a href="{{=URL(port=porta, r=request, f='login', vars={'rede':'facebook'})}}" class="face_login">
-                            <!-- <a href="{{=URL(f='login', vars={'rede':'facebook'})}}" class="face_login"> -->
-                                <span class="face_icon">
-                                    <img src="{{=URL('static','img/i_face.png')}}" alt="fb" alt=""/>
-                                </span>
-                                <span class="text">{{=T('Entrar com Facebook')}}</span>
-                            </a>
-                            <div class="division">
-                                <hr class="left">
-                                <span>ou</span>
-                                <hr class="right">
-                            </div>
-                        </div> 
-                        {{=form.custom.begin}}
-                            <!-- primeiro nome -->
-                            {{ form.elements('#auth_user_first_name')[0] ['_placeholder'] = "Primeiro Nome" }}
-                            {{=form.custom.widget.first_name}}
-
-                            <!-- ultimo nome -->
-                            {{ form.elements('#auth_user_last_name')[0] ['_placeholder'] = "Último Nome" }}
-                            {{=form.custom.widget.last_name}}
-
-                            <!-- email -->
-                            {{ form.elements('#auth_user_email')[0] ['_placeholder'] = "Email" }}
-                            {{ form.elements('#auth_user_email')[0] ['_type'] = "email" }}
-                            {{=form.custom.widget.email}}
-
-                            <!-- username (gero numero randomico) -->
-                            {{ form.elements('#auth_user_username')[0] ['_style'] = "display:none" }}
+                            {{ form.elements('#auth_user_username')[0] ['_placeholder'] = "Username" }}
                             {{=form.custom.widget.username}}
                             
                             <!-- senha -->
                             {{ form.elements('#auth_user_password')[0] ['_placeholder'] = "Senha" }}
                             {{=form.custom.widget.password}}
-
-                            <!-- confirmacao da senha -->
-                            {{ form.element(_name='password_two')['_placeholder'] = "Confirme a senha" }}
-                            {{=form.custom.widget.password_two}}
-                            
                             <input type="submit" class="btn" value="Entrar"/>
                         {{=form.custom.end}}
-
                     </div> <!-- form -->
                     {{elif request.args(0)=='profile':}}
                     <div class="form">
@@ -135,60 +65,10 @@
                             <input type="submit" class="btn" value="Salvar"/>
                         {{=form.custom.end}}
                     </div> <!-- form -->
-                    {{elif request.args(0)=='change_password':}}
-                    <div class="form">
-                        {{=form.custom.begin}}
-                            <!-- senha antiga-->
-                            {{ form.elements('#no_table_old_password')[0] ['_placeholder'] = "Senha antiga" }}
-                            {{=form.custom.widget.old_password}}
-                            <!-- senha -->
-                            {{ form.elements('#no_table_new_password')[0] ['_placeholder'] = "Senha nova" }}
-                            {{=form.custom.widget.new_password}}
-
-                            <!-- confirmacao da senha -->
-                            {{ form.elements('#no_table_new_password2')[0] ['_placeholder'] = "Confirme a senha" }}
-                            {{=form.custom.widget.new_password2}}
-                            <input type="submit" class="btn" value="Mudar a senha"/>
-                        {{=form.custom.end}}
-                    </div> <!-- form -->
-                    {{elif request.args(0)=='request_reset_password':}}
-                    <div class="form">
-                        {{=form.custom.begin}}
-                            <!-- email -->
-                            {{ form.elements('#auth_user_email')[0] ['_placeholder'] = "Email" }}
-                            {{ form.elements('#auth_user_email')[0] ['_type'] = "email" }}
-                            {{=form.custom.widget.email}}
-                            <input type="submit" class="btn" value="Salvar"/>
-                        {{=form.custom.end}}
-                    </div> <!-- form -->
-                    {{elif request.args(0)=='reset_password':}}
-                    <div class="form">
-                        {{=form.custom.begin}}
-                            <!-- nova senha -->
-                            {{ form.elements('#no_table_new_password')[0] ['_placeholder'] = "Nova Senha" }}
-                            {{ form.elements('#no_table_new_password')[0] ['_type'] = "password" }}
-                            {{=form.custom.widget.new_password}}
-
-                           <!-- confirma nova senha -->
-                            {{ form.elements('#no_table_new_password2')[0] ['_placeholder'] = "Confirma Senha" }}
-                            {{ form.elements('#no_table_new_password2')[0] ['_type'] = "password" }}
-                            {{=form.custom.widget.new_password2}}
-
-                            <input type="submit" class="btn" value="Solicitar nova senha"/>
-                        {{=form.custom.end}}
-                    </div> <!-- form -->
-
                     {{pass}}
                 </div>
             </div>
             <p class="already">
-            {{if request.args(0)=='login':}}
-                {{=T('Não possui uma conta?')}} 
-                <a href="{{=URL(f='user',args='register')}}">{{=T('Registrar-se')}}</a>
-            {{elif request.args(0)=='register':}}
-                {{=T('Já possui uma conta?')}} 
-                <a href="{{=URL(f='user',args='login')}}">{{=T('Entrar')}}</a>
-            {{pass}}
                 <br>
                 <br>
                 <strong>{{=T('ATENÇÃO. Termos de privacidade')}}. <a data-toggle="modal" href="#termos_compromisso" title="Termos de compromisso">{{=T('Clique aqui')}}</a> {{=T('e leia com calma')}}.</strong>
