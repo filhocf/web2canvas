@@ -28,9 +28,8 @@ def projetos():
     import os
     from datetime import datetime
 
-    pessoa = db((Pessoa.usuario1==auth.user.id) | (Pessoa.usuario2==auth.user.id)).select().first()
-    meus_projetos = db(Projeto.criado_por==pessoa.id).select()
-    projetos_colaborador = db(Compartilhamento.pessoa_id==pessoa.id).select()
+    meus_projetos = db(Projeto.criado_por==auth.user.id).select()
+    projetos_colaborador = db(Compartilhamento.user_id==auth.user.id).select()
 
     folder = 'static/uploads/thumbnail/'
     form = SQLFORM.factory(
@@ -45,9 +44,9 @@ def projetos():
 
         Projeto.insert(
                         nome=form.vars.nome,
-                        criado_por=pessoa.id,
+                        criado_por=auth.user.id,
                         criado_em=datetime.now(),
-                        thumbnail=fname,
+                        #thumbnail=fname,
                         )
         redirect(URL('projetos'))
 
@@ -89,10 +88,9 @@ def excluir_projeto():
     diretorio_upload = '%sstatic/uploads/thumbnail' % request.folder
     projeto_id = request.vars['projeto_id'] or redirect(URL('index'))
     projeto = db(Projeto.id==projeto_id).select().first()
-    pessoa = db((Pessoa.usuario1==auth.user.id) | (Pessoa.usuario2==auth.user.id)).select().first()
-
+    
     if projeto:
-        if pessoa.id == projeto.criado_por:
+        if auth.user.id == projeto.criado_por:
             db(Projeto.id==projeto_id).delete()
             # Deleta a imagem do projeto
             subprocess.call('rm %s/%s' % (diretorio_upload, projeto.thumbnail), shell=True)
@@ -107,35 +105,35 @@ def projeto_canvas():
     import json
     projeto_id = request.args(0) or redirect(URL('index'))
     session.projeto_id = projeto_id
-    pessoa = db((Pessoa.usuario1==auth.user.id) | (Pessoa.usuario2==auth.user.id)).select().first()
     pessoas_autorizadas =  [i.criado_por for i in db(Projeto.id==projeto_id).select()]
 
     for i in db(Compartilhamento.projeto_id==projeto_id).select():
-        if not i.pessoa_id in pessoas_autorizadas:
-            pessoas_autorizadas.append(i.pessoa_id)
+        if not i.user_id in pessoas_autorizadas:
+            pessoas_autorizadas.append(i.user_id)
 
-    if pessoa.id in pessoas_autorizadas:
+    if auth.user.id in pessoas_autorizadas:
         projeto = db(Projeto.id==projeto_id).select().first()
         time_compartilhamento = db(Compartilhamento.projeto_id==projeto_id).select()
-        id_time = [i.pessoa_id for i in time_compartilhamento]
+        id_time = [i.user_id for i in time_compartilhamento]
         id_time.append(projeto.criado_por)
 
-        usuarios_para_adicionar = {i.nome:i.id for i in db(db.pessoa).select() if not i.id in id_time}
-
+        usuarios_para_adicionar = {i.first_name:i.id for i in db(db.auth_user).select() if not i.id in id_time}
         usuario_dados = _email_usuarios(projeto.criado_por.id)
 
-        pessoas_compartilhadas = time_compartilhamento.as_dict()
-        for pessoas in pessoas_compartilhadas:
-            usuario = _email_usuarios(pessoas_compartilhadas[pessoas]['pessoa_id'])
-            pessoas_compartilhadas[pessoas] = {
-                                                "nome": usuario["nome"],
-                                                "email": usuario["email"],
-                                                "username": usuario["username"]
-                                                }
+        pessoas_compartilhadas = {}
+
+        for membro in time_compartilhamento:
+            membro_id = membro['user_id']
+            usuario = _email_usuarios(membro_id)
+            pessoas_compartilhadas[membro_id] = {
+                "nome": usuario["nome"],
+                "email": usuario["email"],
+                "username": usuario["username"]
+            }
 
         return dict(projeto=projeto,
                     pessoas_compartilhadas=pessoas_compartilhadas,
-                    pessoa_logada=pessoa.id,
+                    pessoa_logada=auth.user.id,
                     usuarios_para_adicionar=usuarios_para_adicionar,
                     usuario_dados=usuario_dados)
     else:
@@ -144,13 +142,12 @@ def projeto_canvas():
 
 @auth.requires_login()
 def _email_usuarios(id):
-    dados_pessoa = {}
-    pessoa = db(Pessoa.id==id).select().first()
+    pessoa = db(db.auth_user.id==id).select().first()
     dados_pessoa = {
-                    "nome": "%s %s" % (pessoa.usuario1.first_name,pessoa.usuario1.last_name),
-                    "email": pessoa.usuario1.email,
-                    "username": pessoa.usuario1.username
-                    }
+        "nome": pessoa.full_name,
+        "email": pessoa.email,
+        "username": pessoa.username
+    }
 
     return dados_pessoa
 
@@ -251,13 +248,11 @@ def adicionar_usuario():
     """Funcao que adiciona usuario a um projeto
     """
     projeto_id = request.vars['projeto_id'] or redirect(URL('index'))
-    pessoa_id = int(request.vars['pessoa_id']) or redirect(URL('index'))
-    pessoa_logada = db((Pessoa.usuario1==auth.user.id) | (Pessoa.usuario2==auth.user.id)).select().first()
-
+    pessoa_id = int(request.vars['user_id']) or redirect(URL('index'))
     projeto = db(Projeto.id==projeto_id).select().first()
 
-    if projeto.criado_por == pessoa_logada.id:
-        Compartilhamento.insert(pessoa_id=pessoa_id,
+    if projeto.criado_por == auth.user.id:
+        Compartilhamento.insert(user_id=pessoa_id,
             projeto_id=projeto_id)
     redirect(URL(c='default', f='projeto_canvas', args=[projeto_id]))
 
@@ -307,27 +302,6 @@ def feedback_form():
 
     return dict(form=form)
 
-
-def login():
-    if request.vars:
-        if request.vars['rede'] == 'facebook':
-            session.auth_with = 'facebook'
-
-    redirect(URL('_cadastrar_pessoa'))
-
-
-@auth.requires_login()
-def _cadastrar_pessoa():
-    nome = '%s %s' % (session.auth.user.first_name, session.auth.user.last_name)
-    count = db((Pessoa.usuario1==session.auth.user.id) | (Pessoa.usuario2==session.auth.user.id)).count()
-    if count == 0:
-        pessoa_id = Pessoa.insert(
-                        nome=nome.strip(),
-                        usuario1=session.auth.user.id,
-                        )
-        db(db.auth_user.id == session.auth.user.id).update(primeira_vez=True)
-
-    redirect(URL('projetos'))
 
 @auth.requires_login()
 def exportar_canvas():
@@ -444,6 +418,7 @@ def user():
 
     elif request.args(0) == 'logout':
         session.clear()
+        redirect(URL(c='default', f='index'))
 
     return dict(form = auth())
 
