@@ -123,7 +123,7 @@
                 lookup: pessoas,
                 onSelect: function (suggestion) {
                     id_pessoa = suggestion.data;
-                    $('#adicionar_usuario').attr('href', '{{=URL(c="default", f="adicionar_usuario", vars={"projeto_id": projeto.id})}}' + '&pessoa_id=' + id_pessoa);
+                    $('#adicionar_usuario').attr('href', '{{=URL(c="default", f="adicionar_usuario", vars={"projeto_id": projeto.id})}}' + '&user_id=' + id_pessoa);
                 }
             });
         </script>
@@ -158,22 +158,7 @@
        HTML5 elements & feature detects -->
     <script src="{{=URL('static','js/modernizr.custom.js')}}"></script>
     <script src="{{=URL('static','js/web2py.js')}}"></script>
-    <!-- Bootstrap trigger to feedback-modal -->
-    <a href="#feedback-modal" class="btn btn-danger btn_feedback" data-toggle="modal">
-      feedback
-    </a>
-    <!-- form feedback ajax -->
-    {{=LOAD('default', 'feedback_form', ajax=True)}}
-
-    <!-- share-modal -->
-    <a href="#share-modal" class="btn btn-success share-modal" data-toggle="modal">
-        <i class="icon-share icon-white"></i>
-      {{=T('Gostou? Ajude a divulgar')}}
-    </a>
-
-    {{include "default/share_modal.html"}}
-
-
+    
     <!-- Google Analytics -->
     <script type="text/javascript">
 
