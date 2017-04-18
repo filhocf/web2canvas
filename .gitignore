@@ -28,4 +28,5 @@ static/uploads/thumbnail/*.jpg
 static/uploads/thumbnail/*.gif
 static/uploads/temp/*.png
 static/uploads/temp/*.pdf
+modules/data_config.py
 
