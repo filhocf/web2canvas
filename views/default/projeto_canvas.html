@@ -34,7 +34,7 @@
                 <li>
                     <h4>{{=T('Nome')}}: {{=projeto.nome}}</h4>
                 </li>
-                <li><h4>{{=T('Por')}}: {{=projeto.criado_por.nome}}</h4></li>
+                <li><h4>{{=T('Por')}}: {{=projeto.criado_por.full_name}}</h4></li>
                 <li><h4>{{=T('Criado em')}}: {{=projeto.criado_em.strftime("%d/%m/%Y")}}</h4></li>
             </ul>
         </div>
@@ -394,15 +394,10 @@
                       <div class="person">
                         <div class="icon">
                         <!-- gravatar do usuario -->
-                          {{ if usuario_dados["username"].startswith('1'):}}
-                          <!-- usuario facebook -->
-                          <img src='https://graph.facebook.com/{{=usuario_dados["username"]}}/picture?width=80&height=80' class="colaboradores_avatares" alt='{{=usuario_dados["nome"]}}' title='{{=usuario_dados["nome"]}}'>
-                          {{else:}}
-                          <img src='{{=Gravatar(usuario_dados["email"]).thumb}}' class="colaboradores_avatares" alt='{{=usuario_dados["nome"]}}' title='{{=usuario_dados["nome"]}}'>
-                          {{pass}}
+                        <img src='{{=Gravatar(usuario_dados["email"]).thumb}}' class="colaboradores_avatares" alt='{{=usuario_dados["nome"]}}' title='{{=usuario_dados["nome"]}}'>
                         </div>
                         <div class="name">
-                        {{=projeto.criado_por.nome}}
+                        {{=projeto.criado_por.full_name}}
                         </div>
                       </div>
                   </li>
@@ -411,12 +406,7 @@
                       <div class="person">
                         <div class="icon">
                         <!-- gravatar do usuario -->
-                          {{ if pessoas_compartilhadas[i]["username"].startswith('1'):}}
-                          <!-- usuario facebook -->
-                          <img src='https://graph.facebook.com/{{=pessoas_compartilhadas[i]["username"]}}/picture?width=80&height=80' class="colaboradores_avatares" alt='{{=pessoas_compartilhadas[i]["nome"]}}' title='{{=pessoas_compartilhadas[i]["nome"]}}'>
-                          {{else:}}
-                          <img src='{{=Gravatar(pessoas_compartilhadas[i]["email"]).thumb}}' alt='{{=pessoas_compartilhadas[i]["nome"]}}' class="colaboradores_avatares" title='{{=pessoas_compartilhadas[i]["nome"]}}'>
-                          {{pass}}
+                        <img src='{{=Gravatar(pessoas_compartilhadas[i]["email"]).thumb}}' alt='{{=pessoas_compartilhadas[i]["nome"]}}' class="colaboradores_avatares" title='{{=pessoas_compartilhadas[i]["nome"]}}'>
                         </div>
                         <div class="name">
                         {{=pessoas_compartilhadas[i]["nome"]}}
@@ -447,16 +437,6 @@
     <span class="guia-btn-slide-text">{{=T('guia')}}</span>
     <span class="guia-btn-icon-left"><span></span></span>
 </a>
-
-<!-- verifico se algum bloco possui cartao -->
-{{ for i in range(1,10): }}
-    {{ if tem_cartao["bloco%d"%i] == True: }}
-        <script>var chama_guia = false;</script>
-        {{break}}
-    {{ else: }}
-        <script>var chama_guia = true;</script>
-    {{ pass }}
-{{ pass }}
 
 <!-- Tip Content -->
 <ol id="joyRideTipContent">
