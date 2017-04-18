@@ -29,25 +29,36 @@ Installation
 
     git clone https://www-scm.prevnet/desc/web2canvas.git
 
+*3.*  Copy and edit the application configuration file:
+
+    cd web2canvas/modules
+    cp data_config_orig.py data_config.py
+    cd ../..
+
 *4.*  Install python-ldap:
 
     pip install python-ldap
 
-*3.*  Now start web2py.
+*5.*  Install psycopg2:
+
+    pip install psycopg2
+
+*6.*  Now start web2py.
 
     python web2py -a 1
 
-*4.*  Access the application by URL.
+*7.*  Access the application by URL.
 
     http://localhost:8000/web2canvas
 
-*5.*  Edit the file "/modules/data_config.py" and enter the data of your application to connect to ldap and to the mail server.
+*8.*  Edit the file "/modules/data_config.py" and enter the data of your application to connect to ldap and to the mail server.
 
 Changelog
 -----------
 
 **v 1.4**:
 
+- Use PostgreSQL instead of sqlite
 - Remove facebook authentication
 - Remove feedback forms
 - Remove share models forms
