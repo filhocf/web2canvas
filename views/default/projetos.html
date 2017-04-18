@@ -2,13 +2,6 @@
 
 {{ if meus_projetos: }}
     {{ len_meus_projetos = len(meus_projetos) }}
-    <script>
-        var chama_guia = false;
-    </script>
-{{ else: }}
-    <script>
-        var chama_guia = true;
-    </script>
 {{ pass }}
 
 {{ if projetos_colaborador: }}
@@ -16,22 +9,6 @@
 {{ pass }}
 
 <div class="container">
-    <div class="banner banner--stable banner--hide">
-      <div class="banner__logo">
-        <img src={{=URL('static', 'images/startercity-logo-interna.png' )}}>
-      </div>
-      <div class="banner__content">
-        <h2 class="banner__content__title">O Web2Canvas vai receber melhorias...</h2>
-        <p class="banner__content__description">
-          Descubra esta novidade na estréia da Starter TV na <strong>Starter City</strong>, a nova iniciativa da X4 Start para ajudar empreendedores de todo o Brasil.
-        </p>
-        <p class="banner__content__infos">
-          <strong>Hangout on air - 23 de Agosto de 2015</strong> <br>
-          Domingo às 14:00 (Horário de Brasília)
-        </p>
-        <a href="https://plus.google.com/events/crfv4lg3alt19fsgql4vcqnjlps" target="_blank" class="banner__content__button banner__content__button--success" type="button" name="button">Reserve sua vaga agora</a>
-      </div>
-    </div>
     <div id="projetos_container" class="tabbable"> <!-- Only required for left/right tabs -->
       <div class="row-fluid">
           <ul class="nav nav-tabs span12">
@@ -153,7 +130,7 @@
                                 </a>
                             </li>
                             <li><strong>Criado em: </strong>{{=projeto.projeto_id.criado_em.strftime("%d/%m/%Y")}}</li>
-                            <li><strong>Por: </strong>{{=projeto.projeto_id.criado_por.nome}}</li>
+                            <li><strong>Por: </strong>{{=projeto.projeto_id.criado_por.full_name}}</li>
                         </ul>
                     </div>
                 </div>
