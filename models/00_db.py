@@ -46,8 +46,6 @@ crud, service, plugins = Crud(db), Service(), PluginManager()
 ## create all tables needed by auth if not custom tables
 
 auth.settings.extra_fields['auth_user']= [
-        Field("tipo_rede", "string", length=128, default=""),
-        Field("token", "string", length=128, default=""),
         Field("primeira_vez", "boolean", default=True),
     ]
 
@@ -56,23 +54,13 @@ auth.define_tables(username=True, signature=False)
 
 if not "auth_user" in db.tables:
     db.define_table("auth_user",
-        Field("tipo_rede", "string", length=128, default=""),
-        Field("token", "string", length=128, default=""),
         Field("primeira_vez", "boolean", default=True),
         migrate="auth_user.table")
-
-if not "pessoa" in db.tables:
-    Pessoa = db.define_table("pessoa",
-        Field("nome", "string", length=128, default=""),
-        Field("usuario1", db.auth_user, default=None),
-        Field("usuario2", db.auth_user, default=None),
-        format='%(nome)s',
-        migrate="pessoa.table")
 
 if not "projeto" in db.tables:
     Projeto = db.define_table("projeto",
         Field("nome", "string", length=200, default=None),
-        Field("criado_por", db.pessoa, default=None),
+        Field("criado_por", db.auth_user, default=None),
         Field("criado_em", "datetime", default=None),
         Field("parcerias_principais", "text", default=None),
         Field("atividades_principais", "text", default=None),
@@ -89,20 +77,22 @@ if not "projeto" in db.tables:
 
 if not "compartilhamento" in db.tables:
     Compartilhamento = db.define_table("compartilhamento",
-        Field("pessoa_id", db.pessoa, default=None),
+        Field("user_id", db.auth_user, default=None),
         Field("projeto_id", db.projeto, default=None),
         migrate="compartilhamento.table")
 
 """ Relations between tables (remove fields you don't need from requires) """
-db.pessoa.usuario1.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
-db.pessoa.usuario2.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
-db.projeto.criado_por.requires = IS_IN_DB(db, 'pessoa.id', db.pessoa._format)
-db.compartilhamento.pessoa_id.requires = IS_IN_DB(db, 'pessoa.id', db.pessoa._format)
+db.projeto.criado_por.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
+db.compartilhamento.user_id.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
 db.compartilhamento.projeto_id.requires = IS_IN_DB(db, 'projeto.id', db.projeto._format)
+db.auth_user.full_name = Field.Virtual(
+    'full_name',
+    lambda row: "%s %s" % (row.auth_user.first_name, row.auth_user.last_name)
+)
 
 
 ## Variaveis importadas
-from data_config import EMAIL_SERVER, CLIENT_EMAIL, CLIENT_LOGIN
+from data_config import EMAIL_SERVER, CLIENT_EMAIL, CLIENT_LOGIN, LDAP_CONFIG
 
 ## configure email
 mail = Mail()
@@ -111,28 +101,22 @@ mail.settings.sender = CLIENT_EMAIL
 mail.settings.login = CLIENT_LOGIN
 auth.settings.mailer = mail
 
-## configure auth policy
-auth.settings.registration_requires_verification = False
-auth.settings.registration_requires_approval = False
-auth.settings.reset_password_requires_verification = True
+# Allow login with ldap
+from gluon.contrib.login_methods.ldap_auth import ldap_auth
 
-## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
-## register with janrain.com, write your domain:api_key in private/janrain.key
-from gluon.contrib.login_methods.rpx_account import use_janrain
-use_janrain(auth, filename='private/janrain.key')
+# all we need is login
+auth.settings.actions_disabled=['register','change_password','request_reset_password','retrieve_username']
+ 
+# you don't have to remember me
+auth.settings.remember_me_form = False
 
-# forço o login apenas com email
-auth.settings.login_userfield = 'email'
-
-if session.auth_with:
-    if session.auth_with == 'facebook':
-        from facebook_account import FaceBookAccount
-        auth.settings.login_form=FaceBookAccount(globals(),db)
+# Configura aplicacao para autenticar via LDAP
+auth.settings.login_methods.append(
+    ldap_auth(db=db, **LDAP_CONFIG)
+)
 
 # redireciona depois do login
 auth.settings.login_next=URL('projetos')
-# redireciona depois do cadastro
-auth.settings.register_next = URL('_cadastrar_pessoa')
 
 # import Gravatar
 try:
@@ -143,23 +127,3 @@ except ImportError:
 # multiples languages
 if 'siteLanguage' in request.cookies and not (request.cookies['siteLanguage'] is None):
     T.force(request.cookies['siteLanguage'].value)
-
-#########################################################################
-## Define your tables below (or better in another model file) for example
-##
-## >>> db.define_table('mytable',Field('myfield','string'))
-##
-## Fields can be 'string','text','password','integer','double','boolean'
-##       'date','time','datetime','blob','upload', 'reference TABLENAME'
-## There is an implicit 'id integer autoincrement' field
-## Consult manual for more options, validators, etc.
-##
-## More API examples for controllers:
-##
-## >>> db.mytable.insert(myfield='value')
-## >>> rows=db(db.mytable.myfield=='value').select(db.mytable.ALL)
-## >>> for row in rows: print row.id, row.myfield
-#########################################################################
-
-## after defining tables, uncomment below to enable auditing
-# auth.enable_record_versioning(db)
