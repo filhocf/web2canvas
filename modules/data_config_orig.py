@@ -9,8 +9,8 @@ CLIENT_LOGIN = '<usuario>:<senha>'
 ## Configuracao do LDAP
 LDAP_CONFIG = {
     'mode': 'custom',
-    'server': 'ldap.dataprev.gov.br',
-    'base_dn': 'dc=gov,dc=br',
+    'server': '<ldap_server>',
+    'base_dn': '<base_dn>',
     'username_attrib': 'uid',
     'manage_user': True,
     'manage_groups': False,
