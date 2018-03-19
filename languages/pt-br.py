@@ -456,6 +456,7 @@
 'Tipos de relação que uma empresa estabelece com Segmento de Clientes para conquistá-los e mantê-los.': 'Tipos de relação que uma empresa estabelece com Segmento de Clientes para conquistá-los e mantê-los.',
 'TodoList:': 'TodoList:',
 'Todos os custos envolvidos na operação do seu Modelo de Negócio.': 'Todos os custos envolvidos na operação do seu Modelo de Negócio.',
+'Too short': 'Too short',
 'too short': 'muito curta',
 'Totalmente Web, o Web2Canvas é acessível independe do seu Sistema Operacional.': 'Totalmente Web, o Web2Canvas é acessível independe do seu Sistema Operacional.',
 'Traceback': 'Traceback',

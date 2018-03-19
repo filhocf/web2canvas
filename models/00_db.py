@@ -12,10 +12,7 @@
 ## Variaveis importadas
 from data_config import EMAIL_SERVER, CLIENT_EMAIL, CLIENT_LOGIN, LDAP_CONFIG, PG_CONFIG
 
-if not request.env.web2py_runtime_gae:
-    ## Conecta ao PostgreSQL
-    db = DAL(PG_CONFIG, check_reserved=['all'])
-else:
+if request.env.web2py_runtime_gae:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
     db = DAL('google:datastore')
     ## store sessions and tickets there
@@ -24,6 +21,12 @@ else:
     ## from gluon.contrib.memdb import MEMDB
     ## from google.appengine.api.memcache import Client
     ## session.connect(request, response, db = MEMDB(Client()))
+elif PG_CONFIG:
+    ## Conecta ao PostgreSQL
+    db = DAL(PG_CONFIG, check_reserved=['all'])
+else:
+    ## Connect to sqlite
+    db = DAL('sqlite://db.sqlite')
 
 ## by default give a view/generic.extension to all actions from localhost
 ## none otherwise. a pattern can be 'controller/function.extension'
@@ -105,7 +108,7 @@ from gluon.contrib.login_methods.ldap_auth import ldap_auth
 
 # all we need is login
 auth.settings.actions_disabled=['register','change_password','request_reset_password','retrieve_username']
- 
+
 # you don't have to remember me
 auth.settings.remember_me_form = False
 
