@@ -14,6 +14,10 @@ Dependencies
 The Web2Canvas is a web2py application and run it you will need:
 
 - Python 2.7.x
+- libsasl2-dev 
+- python-dev 
+- libldap2-dev 
+- libssl-dev
 - python-ldap
 - Web2Py 2.5.1
 - Firefox 20+, Chrome 20+
