@@ -64,12 +64,12 @@ try:
     # creates all needed tables
     auth.define_tables(username=True, signature=False)
 
-    if not "auth_user" in db.tables:
+    if "auth_user" not in db.tables:
         db.define_table("auth_user",
             Field("primeira_vez", "boolean", default=True),
             migrate="auth_user.table")
 
-    if not "projeto" in db.tables:
+    if "projeto" not in db.tables:
         Projeto = db.define_table("projeto",
             Field("nome", "string", length=200, default=None),
             Field("criado_por", db.auth_user, default=None),
@@ -87,7 +87,7 @@ try:
             format='%(nome)s',
             migrate="projeto.table")
 
-    if not "compartilhamento" in db.tables:
+    if "compartilhamento" not in db.tables:
         Compartilhamento = db.define_table("compartilhamento",
             Field("user_id", db.auth_user, default=None),
             Field("projeto_id", db.projeto, default=None),
