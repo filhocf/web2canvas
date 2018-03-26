@@ -10,7 +10,12 @@
 # request.requires_https()
 
 ## Variaveis importadas
-from data_config import EMAIL_SERVER, CLIENT_EMAIL, CLIENT_LOGIN, LDAP_CONFIG, PG_CONFIG
+from data_config import EMAIL_SERVER
+from data_config import CLIENT_EMAIL
+from data_config import CLIENT_LOGIN
+from data_config import LDAP_CONFIG
+from data_config import PG_CONFIG
+from log_conf import logger
 
 if request.env.web2py_runtime_gae:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
@@ -51,7 +56,7 @@ crud, service, plugins = Crud(db), Service(), PluginManager()
 
 ## create all tables needed by auth if not custom tables
 
-auth.settings.extra_fields['auth_user']= [
+auth.settings.extra_fields['auth_user'] = [
         Field("primeira_vez", "boolean", default=True),
     ]
 
@@ -103,22 +108,27 @@ mail.settings.sender = CLIENT_EMAIL
 mail.settings.login = CLIENT_LOGIN
 auth.settings.mailer = mail
 
-# Allow login with ldap
-from gluon.contrib.login_methods.ldap_auth import ldap_auth
+try:
+    # Allow login with ldap
+    from gluon.contrib.login_methods.ldap_auth import ldap_auth
+    # all we need is login
+    auth.settings.actions_disabled = [
+                                    'register',
+                                    'change_password',
+                                    'request_reset_password',
+                                    'retrieve_username']
 
-# all we need is login
-auth.settings.actions_disabled=['register','change_password','request_reset_password','retrieve_username']
+    # you don't have to remember me
+    auth.settings.remember_me_form = False
+    # Configura aplicacao para autenticar via LDAP
+    auth.settings.login_methods.append(
+        ldap_auth(db=db, **LDAP_CONFIG)
+    )
+    # redireciona depois do login
+    auth.settings.login_next = URL('projetos')
+except Exception as e:
+    logger.error(str(e))
 
-# you don't have to remember me
-auth.settings.remember_me_form = False
-
-# Configura aplicacao para autenticar via LDAP
-auth.settings.login_methods.append(
-    ldap_auth(db=db, **LDAP_CONFIG)
-)
-
-# redireciona depois do login
-auth.settings.login_next=URL('projetos')
 
 # import Gravatar
 try:
