@@ -93,14 +93,18 @@ try:
             Field("projeto_id", db.projeto, default=None),
             migrate="compartilhamento.table")
 
-    """ Relations between tables (remove fields you don't need from requires) """
-    db.projeto.criado_por.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
-    db.compartilhamento.user_id.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
-    db.compartilhamento.projeto_id.requires = IS_IN_DB(db, 'projeto.id', db.projeto._format)
-    db.auth_user.full_name = Field.Virtual(
-        'full_name',
-        lambda row: "%s %s" % (row.auth_user.first_name, row.auth_user.last_name)
-    )
+    try:
+        """ Relations between tables (remove fields you don't need from requires) """
+        db.projeto.criado_por.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
+        db.compartilhamento.user_id.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
+        db.compartilhamento.projeto_id.requires = IS_IN_DB(db, 'projeto.id', db.projeto._format)
+        db.auth_user.full_name = Field.Virtual(
+            'full_name',
+            lambda row: "%s %s" % (row.auth_user.first_name, row.auth_user.last_name)
+        )
+    except Exception as e:
+        logger.debug(str(e))
+        pass
 
     ## configure email
     mail = Mail()
