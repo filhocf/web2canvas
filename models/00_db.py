@@ -12,7 +12,7 @@
 # Variaveis importadas
 from app_config import conf
 from app_config import env
-from log_config import logger
+from app_config import logger
 
 try:
     if request.env.web2py_runtime_gae:

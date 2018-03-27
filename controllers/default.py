@@ -8,6 +8,7 @@
 ## - download is for downloading files uploaded in the db (does streaming)
 ## - call exposes all registered services (none by default)
 #########################################################################
+from app_config import logger
 
 def index():
     """Home page
@@ -326,22 +327,27 @@ def exportar_canvas():
         return image
 
     elif tipo == "pdf":
-        import os
-        import base64
-        import subprocess
+        try:
+            import os
+            import base64
+            import subprocess
 
-        response.headers['Content-Disposition'] = 'attachment; filename=' + '"'+filename_export+'.pdf"'
+            response.headers['Content-Disposition'] = 'attachment; filename=' + '"'+filename_export+'.pdf"'
 
-        diretorio_temp = '%sstatic/uploads/temp/' % request.folder
+            diretorio_temp = '%sstatic/uploads/temp/' % request.folder
 
-        with open(diretorio_temp+filename+'.png', 'wb') as imgFile:
-            imgFile.write(image)
+            with open(diretorio_temp+filename+'.png', 'wb') as imgFile:
+                imgFile.write(image)
 
-        subprocess.call('convert "%s/%s.png" "%s/%s.pdf"' % (diretorio_temp, filename,diretorio_temp, filename), shell=True)
-        pdfFile = open(diretorio_temp+filename+'.pdf', 'rb')
-        subprocess.call('rm "%s%s".*' % (diretorio_temp, filename), shell=True)
+            subprocess.call('convert "%s/%s.png" "%s/%s.pdf"' % (diretorio_temp, filename,diretorio_temp, filename), shell=True)
+            pdfFile = open(diretorio_temp+filename+'.pdf', 'rb')
+#            subprocess.call('rm "%s%s".*' % (diretorio_temp, filename), shell=True)
+            return pdfFile
 
-        return pdfFile
+        except Exception as e:
+            logger.debug('Erro na exportação do PDF.')
+            logger.debug(str(e))
+
 
     elif tipo == "txt":
         import codecs
