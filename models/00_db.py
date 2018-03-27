@@ -10,8 +10,8 @@
 # request.requires_https()
 
 # Variaveis importadas
-from data_config import conf
-from data_config import env
+from app_config import conf
+from app_config import env
 from log_config import logger
 
 try:
