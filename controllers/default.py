@@ -88,7 +88,7 @@ def excluir_projeto():
     diretorio_upload = '%sstatic/uploads/thumbnail' % request.folder
     projeto_id = request.vars['projeto_id'] or redirect(URL('index'))
     projeto = db(Projeto.id==projeto_id).select().first()
-    
+
     if projeto:
         if auth.user.id == projeto.criado_por:
             db(Projeto.id==projeto_id).delete()
@@ -261,7 +261,8 @@ def feedback_form():
     '''Formulario de feedback do site.
     '''
     ## Variaveis importadas
-    from data_config import CLIENT_EMAIL
+    from app_config import conf
+    from app_config import env
 
     form = SQLFORM.factory(
         Field('email',
@@ -291,7 +292,7 @@ def feedback_form():
     if form.accepts(request.vars):
         mensagem = '<strong>Email: </strong>%s<br><strong>Assunto: </strong>%s<br><strong>Titulo: </strong>%s<br><strong>Mensagem:</strong><br>%s<strong>' % (form.vars.email, form.vars.assunto, form.vars.titulo_mensagem, form.vars.mensagem )
 
-        status = mail.send(to=[CLIENT_EMAIL],reply_to=form.vars.email,
+        status = mail.send(to=[conf[env]['email']['caixa']],reply_to=form.vars.email,
                 subject='Email recebido "Feedback Web2Canvas": %s - %s' % (form.vars.email, form.vars.assunto) ,
                 message=[None,mensagem])
 
@@ -413,7 +414,6 @@ def user():
         import random
         form = auth.register()
         form.element(_name='username')['_value'] = "%s" %random.random()
-
         return dict(form=form)
 
     elif request.args(0) == 'logout':
