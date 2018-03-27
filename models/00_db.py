@@ -1,57 +1,59 @@
 # -*- coding: utf-8 -*-
 
 #########################################################################
-## This scaffolding model makes your app work on Google App Engine too
-## File is released under public domain and you can use without limitations
+# This scaffolding model makes your app work on Google App Engine too
+# File is released under public domain and you can use without limitations
 #########################################################################
 
-## if SSL/HTTPS is properly configured and you want all HTTP requests to
-## be redirected to HTTPS, uncomment the line below:
+# if SSL/HTTPS is properly configured and you want all HTTP requests to
+# be redirected to HTTPS, uncomment the line below:
 # request.requires_https()
 
-## Variaveis importadas
-from data_config import EMAIL_SERVER
-from data_config import CLIENT_EMAIL
-from data_config import CLIENT_LOGIN
-from data_config import LDAP_CONFIG
-from data_config import PG_CONFIG
-from log_conf import logger
+# Variaveis importadas
+from data_config import conf
+from data_config import env
+from log_config import logger
 
 try:
     if request.env.web2py_runtime_gae:
-        ## connect to Google BigTable (optional 'google:datastore://namespace')
+        # connect to Google BigTable (optional 'google:datastore://namespace')
         db = DAL('google:datastore')
-        ## store sessions and tickets there
+        # store sessions and tickets there
         session.connect(request, response, db=db)
-        ## or store session in Memcache, Redis, etc.
-        ## from gluon.contrib.memdb import MEMDB
-        ## from google.appengine.api.memcache import Client
-        ## session.connect(request, response, db = MEMDB(Client()))
-    elif PG_CONFIG:
-        ## Conecta ao PostgreSQL
-        db = DAL(PG_CONFIG, check_reserved=['all'])
+        # or store session in Memcache, Redis, etc.
+        # from gluon.contrib.memdb import MEMDB
+        # from google.appengine.api.memcache import Client
+        # session.connect(request, response, db = MEMDB(Client()))
+    elif conf[env]['database']['uri']:
+        # Conecta ao PostgreSQL
+        db = DAL(conf[env]['database']['uri'], check_reserved=['all'])
     else:
-        ## Connect to sqlite
+        # Connect to sqlite
         db = DAL('sqlite://db.sqlite')
 
-    ## by default give a view/generic.extension to all actions from localhost
-    ## none otherwise. a pattern can be 'controller/function.extension'
+    # by default give a view/generic.extension to all actions from localhost
+    # none otherwise. a pattern can be 'controller/function.extension'
     response.generic_patterns = ['*'] if request.is_local else []
-    ## (optional) optimize handling of static files
+    # (optional) optimize handling of static files
     # response.optimize_css = 'concat,minify,inline'
     # response.optimize_js = 'concat,minify,inline'
 
     #########################################################################
-    ## Here is sample code if you need for
-    ## - email capabilities
-    ## - authentication (registration, login, logout, ... )
-    ## - authorization (role based authorization)
-    ## - services (xml, csv, json, xmlrpc, jsonrpc, amf, rss)
-    ## - old style crud actions
-    ## (more options discussed in gluon/tools.py)
+    # Here is sample code if you need for
+    # - email capabilities
+    # - authentication (registration, login, logout, ... )
+    # - authorization (role based authorization)
+    # - services (xml, csv, json, xmlrpc, jsonrpc, amf, rss)
+    # - old style crud actions
+    # (more options discussed in gluon/tools.py)
     #########################################################################
 
-    from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
+    from gluon.tools import Auth
+    from gluon.tools import Crud
+    from gluon.tools import Service
+    from gluon.tools import PluginManager
+    from gluon.tools import prettydate
+    from gluon.tools import Mail
     auth = Auth(db)
     crud, service, plugins = Crud(db), Service(), PluginManager()
 
@@ -95,9 +97,21 @@ try:
 
     try:
         """ Relations between tables (remove fields you don't need from requires) """
-        db.projeto.criado_por.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
-        db.compartilhamento.user_id.requires = IS_IN_DB(db, 'auth_user.id', db.auth_user._format)
-        db.compartilhamento.projeto_id.requires = IS_IN_DB(db, 'projeto.id', db.projeto._format)
+        db.projeto.criado_por.requires = IS_IN_DB(
+                                    db,
+                                    'auth_user.id',
+                                    db.auth_user._format
+        )
+        db.compartilhamento.user_id.requires = IS_IN_DB(
+                                    db,
+                                    'auth_user.id',
+                                    db.auth_user._format
+        )
+        db.compartilhamento.projeto_id.requires = IS_IN_DB(
+                                    db,
+                                    'projeto.id',
+                                    db.projeto._format
+        )
         #db.auth_user.full_name = Field.Virtual(
         #    'full_name',
         #    lambda row: "%s %s" % (row.auth_user.first_name, row.auth_user.last_name)
@@ -106,11 +120,11 @@ try:
         logger.debug(str(e))
         pass
 
-    ## configure email
+    # configure email
     mail = Mail()
-    mail.settings.server = EMAIL_SERVER
-    mail.settings.sender = CLIENT_EMAIL
-    mail.settings.login = CLIENT_LOGIN
+    mail.settings.server = conf[env]['email']['servidor']
+    mail.settings.sender = conf[env]['email']['caixa']
+    mail.settings.login = conf[env]['email']['credenciais']
     auth.settings.mailer = mail
 
     try:
@@ -121,13 +135,14 @@ try:
                                         'register',
                                         'change_password',
                                         'request_reset_password',
-                                        'retrieve_username']
+                                        'retrieve_username'
+        ]
 
         # you don't have to remember me
         auth.settings.remember_me_form = False
         # Configura aplicacao para autenticar via LDAP
         auth.settings.login_methods.append(
-            ldap_auth(db=db, **LDAP_CONFIG)
+            ldap_auth(db=db, **conf[env]['ldap'])
         )
         # redireciona depois do login
         auth.settings.login_next = URL('projetos')
