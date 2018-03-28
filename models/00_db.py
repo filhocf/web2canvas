@@ -12,7 +12,7 @@
 # Variaveis importadas
 from app_config import conf
 from app_config import env
-from log_config import logger
+from app_config import logger
 
 try:
     if request.env.web2py_runtime_gae:
@@ -112,10 +112,10 @@ try:
                                     'projeto.id',
                                     db.projeto._format
         )
-        #db.auth_user.full_name = Field.Virtual(
-        #    'full_name',
-        #    lambda row: "%s %s" % (row.auth_user.first_name, row.auth_user.last_name)
-        #)
+        db.auth_user.full_name = Field.Virtual(
+            'full_name',
+            lambda row: "%s %s" % (row.auth_user.first_name, row.auth_user.last_name)
+        )
     except Exception as e:
         logger.debug(str(e))
         pass

@@ -242,6 +242,7 @@
 'Live chat': 'Live chat',
 'Live Chat': 'Live Chat',
 'Log In': 'Log In',
+'Log Out': 'Log Out',
 'Logged in': 'Logged in',
 'Logged out': 'Logged out',
 'Login': 'Autentique-se',
