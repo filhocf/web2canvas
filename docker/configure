@@ -1,0 +1,76 @@
+#!/bin/bash
+
+ADMIN_PASSWORD=${ADMIN_PASSWORD:-web2canvas}
+POSTGRES_DB_NAME=${POSTGRES_DB_NAME:-web2canvas}
+POSTGRES_USER=${POSTGRES_USER:-web2canvas}
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-web2canvas}
+POSTGRES_HOST=${POSTGRES_HOST:-db}
+LDAP_SERVER=${LDAP_SERVER:-'ldaps://ldap.example.com'}
+LDAP_SERVER_PORT=${LDAP_SERVER_PORT:-636}
+LDAP_USER_BASE_DN=${LDAP_USER_BASE_DN:-'dc=example,dc=com'}
+LDAP_SECURE=${LDAP_SECURE:-True}
+LDAP_SELF_SIGNED_SSL=${LDAP_SELF_SIGNED_SSL:-True}
+LDAP_USERNAME=${LDAP_USERNAME:-username}
+LDAP_PASSWORD=${LDAP_PASSWORD:-password}
+LDAP_FILTER=${LDAP_FILTER:-'objectClass=*'}
+LDAP_START_TLS=${LDAP_START_TLS:-True}
+LDAP_LOGGING_LEVEL=${LDAP_LOGGING_LEVEL:-'error'}
+MAIL_TRANSPORT=${MAIL_TRANSPORT:-smtp}
+MAIL_FROM=${MAIL_FROM:-user@example.com}
+MAIL_SMTP_HOSTNAME=${MAIL_SMTP_HOSTNAME:-}
+MAIL_SMTP_PORT=${MAIL_SMTP_PORT:-465}
+MAIL_SMTP_USERNAME=${MAIL_SMTP_USERNAME:-user}
+MAIL_SMTP_PASSWORD=${MAIL_SMTP_PASSWORD:-password}
+MAIL_SMTP_ENCRYPTION=${MAIL_SMTP_ENCRYPTION:-ssl}
+
+if [ ! -d /etc/uwsgi ]; then
+  mkdir /etc/uwsgi /var/log/uwsgi /etc/systemd /etc/systemd/system
+fi
+
+if [ ! -f /usr/local/web2py/applications/web2canvas/private/appconfig.json ]; then
+echo '# -*- coding: utf-8 -*-
+{
+  "prod":{' > /usr/local/web2py/applications/web2canvas/private/appconfig.json
+
+if [ $MAIL_SMTP_HOSTNAME ]; then
+  MAIL_SMTP_SERVER=$MAIL_SMTP_HOSTNAME:$MAIL_SMTP_PORT
+  echo'
+    "email":{
+      "servidor": "MAIL_SMTP_SERVER",
+      "caixa": "<email>",
+      "credenciais": "<usuario>:<senha>"
+    },
+' >> /usr/local/web2py/applications/web2canvas/private/appconfig.json
+fi
+
+if [ $LDAP_SERVER ]; then
+echo '
+    "ldap": {
+      "mode": "uid",
+      "server": "$LDAP_SERVER",
+      "secure": $LDAP_SECURE,
+      "self_signed_certificate": $LDAP_SELF_SIGNED_SSL,
+      "bind_dn": "$LDAP_USERNAME",
+      "bind_pw": "$LDAP_PASSWORD",
+      "base_dn": "$LDAP_USER_BASE_DN",
+      "username_attrib": "uid",
+      "manage_user": true,
+      "manage_groups": false,
+      "custom_scope": "subtree",
+      "logging_level": "error"
+    },
+' >> /usr/local/web2py/applications/web2canvas/private/appconfig.json
+fi
+
+if [ $POSTGRES_DB_NAME ]; then
+echo '
+    "database":{
+      "uri" : ""
+    },
+' >> /usr/local/web2py/applications/web2canvas/private/appconfig.json
+fi
+
+echo '
+  },
+}' >> /usr/local/web2py/applications/web2canvas/private/appconfig.json
+fi
