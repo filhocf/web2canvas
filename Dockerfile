@@ -32,7 +32,7 @@ RUN cd /usr/local; \
     tar xz --strip-components=1 -C web2canvas; \
     chown www-data.www-data /usr/local/web2py -R
 
-COPY docker/default /etc/nginx/sites-available
+COPY docker/default.conf /etc/nginx/sites-available
 COPY docker/web2py.ini /etc/uwsgi/web2py.ini
 COPY docker/configure /configure
 COPY docker/run.sh /run.sh
