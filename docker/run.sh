@@ -1,7 +1,11 @@
 #!/bin/bash
 
+if [ ! -f /usr/local/web2py/wsgihandler.py ]; then
+  cp /usr/local/web2py/handlers/wsgihandler.py /usr/local/web2py
+fi
+
 . /configure
 
-exec nginx
+nginx
 
-exec uwsgi --ini /etc/uwsgi/web2py.ini
+uwsgi --ini /etc/uwsgi/web2py.ini
