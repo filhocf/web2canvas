@@ -11,8 +11,8 @@ RUN \
     apt-get update
 
 # Install a tool set
-RUN apt-get install -y nginx-full libldap2-dev libsasl2-dev; \
-    pip install uwsgi python-ldap psycopg2
+RUN apt-get install -y nginx-full libldap2-dev libsasl2-dev vim; \
+    pip install uwsgi python-ldap psycopg2-binary
 
 RUN cd /usr/local; \
     echo 'Installing Web2py'; \
@@ -32,10 +32,10 @@ RUN cd /usr/local; \
     tar xz --strip-components=1 -C web2canvas; \
     chown www-data.www-data /usr/local/web2py -R
 
-COPY docker/default.conf /etc/nginx/sites-available
+COPY docker/default.conf /etc/nginx/sites-available/default
 COPY docker/web2py.ini /etc/uwsgi/web2py.ini
+COPY docker/routes.py /usr/local/web2py/routes.py
 COPY docker/configure /configure
 COPY docker/run.sh /run.sh
-COPY docker/routes.py /usr/local/web2py/routes.py
 
 CMD ["/run.sh"]
