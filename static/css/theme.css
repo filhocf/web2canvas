@@ -10,6 +10,11 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Open Sans', sans-serif;
+    src: url('fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
 html {
 	margin: 0;
 }
@@ -19,7 +24,8 @@ body {
 	background: #DDDCE2 url(../img/content_bg.jpg) repeat left top;
 	-webkit-font-smoothing: antialiased;
 	font-size: 10px;
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	//font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
 	color: #333;
 }
 
@@ -185,9 +191,11 @@ input[type="color"]:focus,
 	text-shadow: none;
 }
 .navbar .nav.pull-right {
-	/*top: 10px;*/
-	margin-right: 110px;
-	width: 65%;
+	/*! top: 10px; */
+	/*! margin-right: 110px; */
+	width: 75%;
+	display: flex;
+	justify-content: flex-end;
 }
 .navbar .nav > li > a {
 	color: #F8F8F8;
@@ -395,6 +403,35 @@ ul.mais_recuros i {
 #modelo_canvas ol {
 	font-size: 1.6em;
 }
+
+.m-business{
+  //background-image: url("../img/banner-bg.png");
+  background-image: url("../img/bg-lg.png");
+  height: 400px;
+  background-size: cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.m-business h2{
+  margin-top: 20px;
+  font-weight: lighter;
+  font-size: 4em;
+}
+
+.m-business p{
+  display: block;
+  font-weight: normal;
+  font-size: 1.7em;
+  max-width: 800px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+
+
 
 /* Blocos Canvas
 -------------------------------------------------- */
@@ -748,7 +785,7 @@ ul.mais_recuros i {
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#545F6D', endColorstr='#303946',GradientType=0 );
 	}
 	.navbar .nav.pull-right {
-	    margin-right: 80px;
+	    /*! margin-right: 80px; */
 	    margin-top: 10px;
 	}
 }
