@@ -72,9 +72,9 @@ a:focus {
 }
 .scrolltop span {
 	position: relative;
-	top: 9px;
-	left: 5px;
-	font-size: 1.4em;
+  left: 10.8px;
+  font-size: 3em;
+  top: 4.1px;
 }
 
 /* Old versions of IE patches */
@@ -460,9 +460,14 @@ ul.mais_recuros i {
 .canvas .bloco .icon {
 	width: 65px;
 	height: 65px;
-	background-color: rgb(122, 157, 185);
 	border-radius: 100px;
 	position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  border: 3px solid rgb(122, 157, 185);
+  color: #476A86;
 }
 .canvas .bloco .icon i {
 	background: url('../img/canvas_icons.png') no-repeat;
