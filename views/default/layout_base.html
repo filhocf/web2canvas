@@ -60,6 +60,9 @@
         <!-- starts footer -->
         {{ include 'default/footer.html'}}
         <!-- ends footer -->
+    {{ pass }}
+    {{ if request.function == "user": }}
+        {{ include 'default/fixed-footer.html' }}
     {{pass}}
 
     <!-- Javascripts -->

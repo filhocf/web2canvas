@@ -23,13 +23,6 @@
     {{ if request.function == "projeto_canvas": }}
     <div id="dados_projeto" class="offset1">
         <div>
-            {{ if projeto.thumbnail == "False" or projeto.thumbnail == None or projeto.thumbnail == "":}}
-                <img class="thumbnails" src='{{=URL("static","/img/projeto_sem_imagem.jpg")}}' width="100px" height="100px" alt="Projeto {{=projeto.nome}}" title="Projeto {{=projeto.nome}}">
-            {{ else: }}
-                <img class="thumbnails" src='{{=URL("static","/uploads/thumbnail/%s" %projeto.thumbnail)}}' width="100px" height="100px" alt="Projeto {{=projeto.nome}}" title="Projeto {{=projeto.nome}}">
-            {{ pass }}
-        </div>
-        <div>
             <ul>
                 <li>
                     <h4>{{=T('Nome')}}: {{=projeto.nome}}</h4>
