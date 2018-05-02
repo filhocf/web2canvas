@@ -1200,6 +1200,35 @@ i.myspace { background-position: -233px -51px; }
   ====================
 */
 
+.canvas-info ul li h4{
+  font-weight: lighter;
+}
+
+
+.canvas-name h4{
+  font-size: 2.7em;
+  margin-bottom: 15px;
+
+}
+
+.canvas-author h4,
+.canvas-date h4{
+  font-size: 1.5em;
+  font-weight: bold !important;
+  margin: 0;
+}
+
+
+#dados_projeto ul{
+  margin: 10px 0;
+}
+
+#dados_projeto{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
 #guiatab1,
 #guiatab2,
 #guiatab3{

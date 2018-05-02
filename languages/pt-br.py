@@ -172,7 +172,7 @@
 'Experimente uma ferramenta feita para auxiliar você a descobrir como ganhar dinheiro por meio do entendimento das funções envolvidas em qualquer negócio.': 'Experimente uma ferramenta feita para auxiliar você a descobrir como ganhar dinheiro por meio do entendimento das funções envolvidas em qualquer negócio.',
 'Experimente!': 'Experimente!',
 'export as csv file': 'exportar como um arquivo csv',
-'Exportar Canvas': 'Exportar Canvas',
+'Exportar Canvas': 'Exportar',
 'Exportar Canvas em PDF.': 'Exportar Canvas em PDF.',
 'Exportar PDF': 'Exportar PDF',
 'Exportar PNG': 'Exportar PNG',
