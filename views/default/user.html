@@ -6,6 +6,10 @@
             <div class="span12 box">
                 <div>
                     <div class="head">
+                      <div id="logo" class="brand scroller" alt="Logo Web2Canvas" title="Logo Web2Canvas">
+                      {{ pass }}
+                          <span>open</span>Canvas
+                      </div>
                         {{if request.args(0)=='login':}}
                         <h4>{{=T('Faça login na sua conta (ldap)')}}</h4>
                         {{elif request.args(0)=='register':}}
@@ -24,13 +28,13 @@
                     <div class="form">
                         {{=form.custom.begin}}
                             <!-- email -->
-                            {{ form.elements('#auth_user_username')[0] ['_placeholder'] = "Username" }}
+                            {{ form.elements('#auth_user_username')[0] ['_placeholder'] = "nome.sobrenome" }}
                             {{=form.custom.widget.username}}
-                            
+
                             <!-- senha -->
-                            {{ form.elements('#auth_user_password')[0] ['_placeholder'] = "Senha" }}
+                            {{ form.elements('#auth_user_password')[0] ['_placeholder'] = "senha" }}
                             {{=form.custom.widget.password}}
-                            <input type="submit" class="btn" value="Entrar"/>
+                            <button type="submit" class="login-button" >Entrar</button>
                         {{=form.custom.end}}
                     </div> <!-- form -->
                     {{elif request.args(0)=='profile':}}

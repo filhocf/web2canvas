@@ -21,21 +21,14 @@
 
 <div id="quadro_canvas">
     {{ if request.function == "projeto_canvas": }}
-    <div id="dados_projeto" class="offset1">
-        <div>
-            {{ if projeto.thumbnail == "False" or projeto.thumbnail == None or projeto.thumbnail == "":}}
-                <img class="thumbnails" src='{{=URL("static","/img/projeto_sem_imagem.jpg")}}' width="100px" height="100px" alt="Projeto {{=projeto.nome}}" title="Projeto {{=projeto.nome}}">
-            {{ else: }}
-                <img class="thumbnails" src='{{=URL("static","/uploads/thumbnail/%s" %projeto.thumbnail)}}' width="100px" height="100px" alt="Projeto {{=projeto.nome}}" title="Projeto {{=projeto.nome}}">
-            {{ pass }}
-        </div>
-        <div>
+    <div id="dados_projeto">
+        <div class="canvas-info">
             <ul>
-                <li>
-                    <h4>{{=T('Nome')}}: {{=projeto.nome}}</h4>
+                <li class="canvas-name">
+                    <h4>{{=projeto.nome}}</h4>
                 </li>
-                <li><h4>{{=T('Por')}}: {{=projeto.criado_por.full_name}}</h4></li>
-                <li><h4>{{=T('Criado em')}}: {{=projeto.criado_em.strftime("%d/%m/%Y")}}</h4></li>
+                <li class="canvas-author"><h4>{{=T('Por')}}: {{=projeto.criado_por.full_name}}</h4></li>
+                <li class="canvas-date"><h4>{{=T('Criado em')}}: {{=projeto.criado_em.strftime("%d/%m/%Y")}}</h4></li>
             </ul>
         </div>
     </div>
@@ -43,8 +36,6 @@
     {{ pass }}
     <!--/mensagem de retorno da chamada ajax -->
     <div id="target_ajax"></div>
-
-    <br>
     <div id="container5" class="sessao_parquem">
         <div id="container4" class="sessao_parquem">
             <div id="container3" class="sessao_oque">

@@ -29,7 +29,10 @@
 */
 
 #exportar {
-  margin: 5% 10% 0 0;
+  margin: 0;
+  position: absolute;
+  right: 35px;
+  top: 85px;
 }
 
 /* Start of Column CSS */
@@ -654,12 +657,3 @@ img.colaboradores_avatares {
 @media (max-width: 320px) {
 
 }
-
-
-
-
-
-
-
-
-

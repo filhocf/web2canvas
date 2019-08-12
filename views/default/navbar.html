@@ -11,32 +11,23 @@
             {{ else: }}
             <a id="logo" href="{{=URL('index')}}" class="brand scroller" alt="Logo Web2Canvas" title="Logo Web2Canvas">
             {{ pass }}
-                web2<span>canvas</span>
+                <span>open</span>Canvas
             </a>
-            <span id="beta">BETA</span>
+
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
                     {{ if request.function == 'index': }}
-                    <li>
-                        <a href="#" class="scroller" data-section="#blocos_canvas">Blocos Canvas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="scroller" data-section="#footer">Recursos</a>
-                    </li>
                     <li class='{{=g_pagina_atual("default/modelo_canvas","pagina_atual")}}'>
-                        <a href="{{=URL('modelo_canvas')}}" alt="Modelo Canvas" title="Modelo Canvas">Começando o Canvas</a>
+                        <a href="{{=URL('modelo_canvas')}}" alt="Modelo Canvas" title="Modelo Canvas">Sobre o Canvas</a>
                     </li>
 
                     {{ else: }}
                     <li class='{{=g_pagina_atual("default/modelo_canvas","pagina_atual")}}'>
-                        <a href="{{=URL('modelo_canvas')}}" alt="Modelo Canvas" title="Modelo Canvas">Começando o Canvas</a>
+                        <a href="{{=URL('modelo_canvas')}}" alt="Modelo Canvas" title="Modelo Canvas">Sobre o Canvas</a>
                     </li>
                     {{ pass }}
 
                     {{ if not auth.is_logged_in(): }}
-                    <li>
-                        <a class="btn-header" href="{{=URL(f='user',args='register')}}">{{=T('Cadastre-se')}}</a>
-                    </li>
                     <li>
                         <a class="btn-header" href="{{=URL(f='user',args='login')}}">{{=T('Entrar')}}</a>
                     </li>
@@ -64,13 +55,13 @@
                     {{ pass }}
                         <!-- soporte para multiples lenguages -->
                     {{if hasattr(T,'get_possible_languages'):}}
-                        <span id="multilanguages" class="pull-right">
+                        <!-- <span id="multilanguages" class="pull-right">
                             <select name="siteLanguage" style="width:70px;margin-left:10px;" onchange="var date = new Date();cookieDate=date.setTime(date.getTime()+(100*24*60*60*1000));document.cookie='siteLanguage='+this.options[this.selectedIndex].value+'; expires='+cookieDate+'; path=/';window.location.reload()">
                                 {{for language in T.get_possible_languages():}}
                                     <option {{=T.accepted_language==language and 'selected' or ''}} >{{=language}}</option>
                                 {{pass}}
                             </select>
-                       </span>
+                       </span> -->
                      {{pass}} <!-- listo -->
                 </ul>
             </div>

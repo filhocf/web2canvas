@@ -60,6 +60,9 @@
         <!-- starts footer -->
         {{ include 'default/footer.html'}}
         <!-- ends footer -->
+    {{ pass }}
+    {{ if request.function == "user": }}
+        {{ include 'default/fixed-footer.html' }}
     {{pass}}
 
     <!-- Javascripts -->
@@ -69,7 +72,7 @@
 
     {{ if request.function == "index": }}
         <a href="#" class="scrolltop">
-            <span>subir</span>
+            <span><i class="fas fa-angle-up"></i></span>
         </a>
         <script src="{{=URL('static','js/jquery.cslider.js')}}"></script>
         <script src="{{=URL('static','js/theme.js')}}"></script>
@@ -158,7 +161,7 @@
        HTML5 elements & feature detects -->
     <script src="{{=URL('static','js/modernizr.custom.js')}}"></script>
     <script src="{{=URL('static','js/web2py.js')}}"></script>
-    
+
     <!-- Google Analytics -->
     <script type="text/javascript">
 
@@ -176,6 +179,8 @@
     {{ if request.function == 'index' or request.function == 'projetos': }}
       <script src="http://x4start.com/cdn/libs/x-banner/js/x-banner.min.js" charset="utf-8"></script>
     {{ pass }}
+
+    <script src="{{=URL('static','js/fontawesome-all.js')}}"></script>
 
 </body>
 </html>

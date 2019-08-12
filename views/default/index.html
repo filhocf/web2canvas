@@ -1,66 +1,12 @@
 {{extend 'default/layout_base.html'}}
 
-<a href="https://www-scm.prevnet/desc/web2canvas" target="_blank" class="navbar-fixed-top"><img style="-webkit-user-select: none; position: absolute; top: 0; right: 0; border: 0; z-index:9999;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" width="127" height="127"></a>
 
-<div id="slider" class="container">
-    <div id="da-slider" class="da-slider">
-        <div class="da-slide slide1">
-            <h2>{{=T('Make Your Business Model')}}</h2>
-            <p>{{=T('Try a tool made to help you figure out how to make money through the understanding of the functions involved in any business.')}}</p>
-            <a href="{{=URL(f='user',args='register')}}" class="btn btn-success btn-large da-link">
-                {{=T('Sign up')}}
-            </a>
-            <div class="da-img"><img src="{{=URL('static','img/slide1.png')}}" alt="Modelo de Negócio Canvas" title="Modelo de Negócio Canvas" /></div>
-        </div>
-        <div class="da-slide slide2">
-            <h2>{{=T('Try it!')}}</h2>
-            <p>{{=T('The Business Model defines what your company does, how it will generate revenue and sustain themselves in the market. Set the Model is the first step to a successful business.')}}</p>
-            <a href="{{=URL('modelo_canvas')}}" class="btn btn-success btn-large da-link">
-                {{=T('Learn more')}}
-            </a>
-            <div class="da-img"><img src="{{=URL('static','img/slide2.png')}}" alt="Design responsivo" title="Design responsivo" /></div>
-        </div>
-        <div class="da-slide slide3">
-            <h2>{{=T('Cross-platform and Open Source')}}</h2>
-            <p>
-                {{=T('Fully Web, Web2Canvas is available independent of your OS.')}}
-                <br>
-                {{=T('Furthermore it is Open Source and have no license cost is free!')}}
-            </p>
-            <a href="https://www-scm.prevnet/desc/web2canvas" target="_blank" class="btn btn-primary btn-large da-link">
-                <i class="i_download"></i>
-                {{=T('Access the code')}}
-            </a>
-            <div class="da-img"><img src="{{=URL('static','img/slide3.png')}}" alt="Cross-platform e Open Source" title="Cross-platform e Open Source" /></div>
-        </div>
-        <div class="da-slide slide4">
-            <h2>{{=T('Why Model Canvas?')}}</h2>
-            <p>{{=T('Because it is a quick and easy way to test various business models to a new company or a new project.')}}
-            </p>
-            <a href="{{=URL(f='user',args='register')}}" class="btn btn-success btn-large da-link">
-                {{=T('Sign up now')}}
-            </a>
-            <div class="da-img"><img src="{{=URL('static','img/slide4.png')}}" alt="Design responsivo" title="Design responsivo" /></div>
-        </div>
-        <div class="da-slide slide3">
-            <h2>{{=T('A platform in constant construction')}}</h2>
-            <p>
-                {{=T('The Web2Canvas is an open source platform that has not been finalized. For this may present Instabilities during use.')}}
-                <br>
-                {{=T('Use with caution.')}}
-            </p>
-            <!-- <a href="https://github.com/gustavox4ids/hackathon_sebrae" target="_blank" class="btn btn-primary btn-large da-link">
-                <i class="i_download"></i>
-                {{=T('Access the code')}}
-            </a> -->
-            <div class="da-img"><img src="{{=URL('static','img/slide3.png')}}" alt="Cross-platform e Open Source" title="Cross-platform e Open Source" /></div>
-        </div>
-        <nav class="da-arrows">
-            <span class="da-arrows-prev"></span>
-            <span class="da-arrows-next"></span>
-        </nav>
-    </div>
+<div class="m-business">
+    <h2>{{=T('Make Your Business Model')}}</h2>
+    <p>{{=T('Try a tool made to help you figure out how to make money through the understanding of the functions involved in any business.')}}</p>
+    <!-- <div class="da-img"><img src="{{=URL('static','img/slide1.png')}}" alt="Modelo de Negócio Canvas" title="Modelo de Negócio Canvas" /></div> -->
 </div>
+
 <div id="intro">
     <div class="container">
         <h1>{{=T('The Web2Canvas is a visual guide to building your business model.')}}</h1>
@@ -78,119 +24,110 @@
     <div class="row">
         <div class="span12">
             <h3 class="intro">
-                {{=T("After reflecting on each block, annotate and relate their ideas, you'll discover how to differentiate their enterprise, reduce costs and raise revenue.")}} <a href="{{=URL(f='user',args='register')}}">{{=T('Make your account and create your Canvas Now!')}}</a>
+                {{=T("After reflecting on each block, annotate and relate their ideas, you'll discover how to differentiate their enterprise, reduce costs and raise revenue.")}}
             </h3>
+
         </div>
     </div>
 
     <div class="row">
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_valor"></i></div>
-            <h4>{{=T('Value Proposition')}}</h4>
-            <p>
-                {{=T("What's your package of products and services and the value it has for customers.")}}
-            </p>
+                <i class="fas fa-gift"></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Value Proposition')}}</h4>
+              <p>
+                  {{=T("What's your package of products and services and the value it has for customers.")}}
+              </p>
+            </div>
         </div>
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_atividades"></i></div>
-            <h4>{{=T('Main Activities')}}</h4>
-            <p>
-                {{=T('List actions/tasks important that your company must meet as a Value Proposition and Business Model to your work.')}}
-            </p>
+                <i class="fas fa-flask"></i></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Main Activities')}}</h4>
+              <p>
+                  {{=T('List actions/tasks important that your company must meet as a Value Proposition and Business Model to your work.')}}
+              </p>
+            </div>
         </div>
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_recursos"></i></div>
-            <h4>{{=T('Key Features')}}</h4>
-            <p>
-                {{=T('Most important resources required to operate the Business Model.')}}
-            </p>
+                <i class="fas fa-wrench"></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Key Features')}}</h4>
+              <p>
+                  {{=T('Most important resources required to operate the Business Model.')}}
+              </p>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_parceiros"></i></div>
-            <h4>{{=T('Key partnerships')}}</h4>
-            <p>
-                {{=T('Network of suppliers and partners that help your company run.')}}
-            </p>
+                <i class="fas fa-users"></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Key partnerships')}}</h4>
+              <p>
+                  {{=T('Network of suppliers and partners that help your company run.')}}
+              </p>
+            </div>
         </div>
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_custos"></i></div>
-            <h4>{{=T('Cost structure')}}</h4>
-            <p>
-                {{=T('All costs involved in the operation of your Business Model.')}}
-            </p>
+                <i class="fas fa-suitcase"></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Cost structure')}}</h4>
+              <p>
+                  {{=T('All costs involved in the operation of your Business Model.')}}
+              </p>
+            </div>
         </div>
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_segmento"></i></div>
-            <h4>{{=T('Customer segment')}}</h4>
-            <p>
-                {{=T('Who are the customers you want to meet? They have a specific profile? How are they grouped? How are you located? There is a common need?')}}
-            </p>
+                <i class="fas fa-sitemap"></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Customer segment')}}</h4>
+              <p>
+                  {{=T('Who are the customers you want to meet? They have a specific profile? How are they grouped? How are you located? There is a common need?')}}
+              </p>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_relacionamento"></i></div>
-            <h4>{{=T('Customer Relationship')}}</h4>
-            <p>
-                {{=T('Types of relationships that a company establishes with Customer segment to win them and keep them.')}}
-            </p>
+                <i class="fas fa-heart"></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Customer Relationship')}}</h4>
+              <p>
+                  {{=T('Types of relationships that a company establishes with Customer segment to win them and keep them.')}}
+              </p>
+            </div>
         </div>
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_canais"></i></div>
-            <h4>{{=T('Channels')}}</h4>
-            <p>
-                {{=T('How your company communicates and reaches its customers to deliver a Value Proposition.')}}
-            </p>
+                <i class="fas fa-truck"></i></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Channels')}}</h4>
+              <p>
+                  {{=T('How your company communicates and reaches its customers to deliver a Value Proposition.')}}
+              </p>
+            </div>
         </div>
         <div class="span4 bloco">
             <div class="icon">
-                <i class="icon_receita"></i></div>
-            <h4>{{=T('Recipes')}}</h4>
-            <p>
-                {{=T('Money the company generates. How much and how you will get customers.')}}
-            </p>
-        </div>
-    </div>
-</div>
-<!-- fim blocos_canvas -->
-
-<!-- starts testimonial -->
-<div id="comentarios">
-    <div class="container">
-        <div class="controls">
-            <hr>
-        </div>
-        <div class="frases_wrapper">
-            <div class="frases">
-                <div class="row">
-                    <div class="span7">
-                        <p class="frase">
-                            {{=T('The Canvas is a business model that indicates the potential for an idea of the digital economy becoming a profitable product...')}}
-                            <span>"</span>
-                        </p>
-                    </div>
-                    <div class="span3 offset1">
-                        <div class="pic">
-                            <img src="{{=URL('static','img/sebrae.jpg')}}" alt="author" class="img-circle" />
-                            <span class="name">{{=T('Connection Newspapers Sebrae')}}</span><br>
-                            <span class="position">{{=T('Campo Grande/MS')}}</span>
-                        </div>
-                    </div>
-                </div>
+                <i class="fas fa-money-bill-alt"></i></div>
+            <div class="bloco-text">
+              <h4>{{=T('Recipes')}}</h4>
+              <p>
+                  {{=T('Money the company generates. How much and how you will get customers.')}}
+              </p>
             </div>
         </div>
     </div>
 </div>
+<!-- fim blocos_canvas -->
 
 <!-- Modal parcerias_ajuda-->
 <div id="todos_recursos" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">

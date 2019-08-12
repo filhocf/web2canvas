@@ -18,6 +18,20 @@ $(".excluir_projeto").click(function() {
   if(confirm(mensagem_confirma)) {
     var id_projeto = this.id;
     var url = urlExcluiProjeto+id_projeto;
-    window.location=url;
-  }  
+    window.location.replace=url;
+  }
+});
+
+function openProject(url){
+	//console.log(url.toString());
+	window.location.href = url.toString();
+}
+
+$('.main-list').on('click', function(e) {
+    url = this.getAttribute("data-url");
+		openProject(url);
+		//console.log(url);
+		//console.log(this);
+}).on('click', '.excluir_projeto', function(e) {
+    e.stopPropagation();
 });
